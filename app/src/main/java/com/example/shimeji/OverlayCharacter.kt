@@ -79,8 +79,8 @@ fun DrawScope.drawSpriteFrame(spriteSheet: Bitmap, frame: Int, frameWidth: Int) 
         image = imageBitmap,
         srcOffset = androidx.compose.ui.unit.IntOffset(srcLeft, 0),
         srcSize = androidx.compose.ui.unit.IntSize(frameWidth, spriteSheet.height),
-        dstOffset = Offset.Zero,
-        dstSize = Size(size.width, size.height)
+        dstOffset = androidx.compose.ui.unit.IntOffset.Zero,
+        dstSize = androidx.compose.ui.unit.IntSize(size.width.toInt(), size.height.toInt())
     )
 }
 

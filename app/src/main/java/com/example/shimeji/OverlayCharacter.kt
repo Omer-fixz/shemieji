@@ -1,6 +1,8 @@
 package com.example.shimeji
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.WindowManager
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -10,10 +12,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlin.random.Random
@@ -21,13 +23,14 @@ import kotlin.random.Random
 @Composable
 fun OverlayCharacter(
     windowManager: WindowManager,
-    layoutParams: WindowManager.LayoutParams
+    layoutParams: WindowManager.LayoutParams,
+    context: Context
 ) {
     var currentFrame by remember { mutableIntStateOf(0) }
     var posX by remember { mutableFloatStateOf(layoutParams.x.toFloat()) }
     var posY by remember { mutableFloatStateOf(layoutParams.y.toFloat()) }
     
-    val spriteSheet = remember { createDummySpriteSheet() }
+    val spriteSheet = remember { loadSpriteSheet(context) }
     val frameCount = 4
     val frameWidth = spriteSheet.width / frameCount
 
@@ -82,6 +85,16 @@ fun DrawScope.drawSpriteFrame(spriteSheet: Bitmap, frame: Int, frameWidth: Int) 
         dstOffset = androidx.compose.ui.unit.IntOffset.Zero,
         dstSize = androidx.compose.ui.unit.IntSize(size.width.toInt(), size.height.toInt())
     )
+}
+
+fun loadSpriteSheet(context: Context): Bitmap {
+    return try {
+        // Try to load from drawable resources
+        BitmapFactory.decodeResource(context.resources, R.drawable.ramadan_lantern_sprite)
+    } catch (e: Exception) {
+        // Fallback to dummy sprite sheet if image not found
+        createDummySpriteSheet()
+    }
 }
 
 fun createDummySpriteSheet(): Bitmap {

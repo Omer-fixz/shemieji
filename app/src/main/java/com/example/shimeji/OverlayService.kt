@@ -74,9 +74,11 @@ class OverlayService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStat
             setViewTreeSavedStateRegistryOwner(this@OverlayService)
             
             setContent {
+                val context = LocalContext.current
                 OverlayCharacter(
                     windowManager = windowManager,
-                    layoutParams = params
+                    layoutParams = params,
+                    context = context
                 )
             }
         }
